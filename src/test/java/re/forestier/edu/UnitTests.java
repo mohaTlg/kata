@@ -83,6 +83,26 @@ public class UnitTests {
         assertEquals(5, p.retrieveLevel());
     }
 
+    @Test
+    @DisplayName("Test addXp and retrieveLevel for the mutations")
+    void testAddXpAndRetrieveLevelMutation() {
+        player p = new player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
+        
+        UpdatePlayer.addXp(p, 10);
+        assertEquals(2, p.retrieveLevel());
+
+        UpdatePlayer.addXp(p, 17);
+        assertEquals(3, p.retrieveLevel());
+
+        UpdatePlayer.addXp(p, 30);
+        assertEquals(4, p.retrieveLevel());
+
+        UpdatePlayer.addXp(p, 54);
+        assertEquals(5, p.retrieveLevel());
+        
+        
+    }
+
 
 
     @Test
@@ -102,6 +122,10 @@ public class UnitTests {
     void testGetXp() {
         player p = new player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
         assertEquals(0, p.getXp());
+        
+        // Getion d'un test de mutation
+        UpdatePlayer.addXp(p, 45);
+        assertEquals(45, p.getXp());
     }
 
     //TESt update player
@@ -164,6 +188,8 @@ public class UnitTests {
         player player = new player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
         assertFalse(UpdatePlayer.addXp(player, 0));
     }
+
+    
 
 
 
