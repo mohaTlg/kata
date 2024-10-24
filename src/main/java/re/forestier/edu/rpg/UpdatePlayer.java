@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class UpdatePlayer {
 
-    private final static String[] objectList = {"Lookout Ring : Prevents surprise attacks","Scroll of Stupidity : INT-2 when applied to an enemy", "Draupnir : Increases XP gained by 100%", "Magic Charm : Magic +10 for 5 rounds", "Rune Staff of Curse : May burn your ennemies... Or yourself. Who knows?", "Combat Edge : Well, that's an edge", "Holy Elixir : Recover your HP"
+    public final static String[] objectList = {"Lookout Ring : Prevents surprise attacks","Scroll of Stupidity : INT-2 when applied to an enemy", "Draupnir : Increases XP gained by 100%", "Magic Charm : Magic +10 for 5 rounds", "Rune Staff of Curse : May burn your ennemies... Or yourself. Who knows?", "Combat Edge : Well, that's an edge", "Holy Elixir : Recover your HP"
     };
 
     public static HashMap<String, HashMap<Integer, HashMap<String, Integer>>> abilitiesPerTypeAndLevel() {
@@ -98,7 +98,7 @@ public class UpdatePlayer {
         return abilitiesPerTypeAndLevel;
     }
 
-    public static boolean addXp(player player, int xp) {
+    public static boolean addXp(Player player, int xp) {
         int currentLevel = player.retrieveLevel();
         player.xp += xp;
         int newLevel = player.retrieveLevel();
@@ -121,46 +121,46 @@ public class UpdatePlayer {
     }
 
     // majFinDeTour met à jour les points de vie
-    public static void majFinDeTour(player player) {
-        if(player.currenthealthpoints == 0) {
+    public static void majFinDeTour(Player player) {
+        if(player.currenthealthPoints == 0) {
             System.out.println("Le joueur est KO !");
             return;
         }
 
-        if(player.currenthealthpoints < player.healthpoints/2) {
+        if(player.currenthealthPoints < player.healthPoints/2) {
             if(!player.getAvatarClass().equals("ADVENTURER")) {
                 if(player.getAvatarClass().equals("DWARF")) {
                     if(player.inventory.contains("Holy Elixir")) {
-                        player.currenthealthpoints+=1;
+                        player.currenthealthPoints+=1;
                     }
-                    player.currenthealthpoints+=1;
+                    player.currenthealthPoints+=1;
                 } else if(player.getAvatarClass().equals("ADVENTURER")) {
-                    player.currenthealthpoints+=2;
+                    player.currenthealthPoints+=2;
                 }
 
 
                 if(player.getAvatarClass().equals("ARCHER")) {
-                    player.currenthealthpoints+=1;
+                    player.currenthealthPoints+=1;
                     if(player.inventory.contains("Magic Bow")) {
-                        player.currenthealthpoints+=player.currenthealthpoints/8-1;
+                        player.currenthealthPoints+=player.currenthealthPoints/8-1;
                     }
                 }
             } else {
-                player.currenthealthpoints+=2;
+                player.currenthealthPoints+=2;
                 if(player.retrieveLevel() < 3) {
-                    player.currenthealthpoints-=1;
+                    player.currenthealthPoints-=1;
                 }
             }
-        } else if(player.currenthealthpoints >= player.healthpoints/2){
-            if(player.currenthealthpoints >= player.healthpoints) {
-                player.currenthealthpoints = player.healthpoints;
+        } else if(player.currenthealthPoints >= player.healthPoints/2){
+            if(player.currenthealthPoints >= player.healthPoints) {
+                player.currenthealthPoints = player.healthPoints;
                 return;
             }
         }
 
 
-        if(player.currenthealthpoints >= player.healthpoints) {
-            player.currenthealthpoints = player.healthpoints;
+        if(player.currenthealthPoints >= player.healthPoints) {
+            player.currenthealthPoints = player.healthPoints;
         }
     }
 }

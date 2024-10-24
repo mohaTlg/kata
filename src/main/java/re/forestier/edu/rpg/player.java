@@ -2,86 +2,87 @@ package re.forestier.edu.rpg;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class player {
+public class Player {
     public String playerName;
-    public String Avatar_name;
-    private String AvatarClass;
+    public String avatarName;
+    public String avatarClass;
 
-    public Integer money;
-    private Float __real_money__;
-
+    public int money;
+    public float realMoney; // Nommé correctement sans les underscores non conventionnels
 
     public int level;
-    public int healthpoints;
-    public int currenthealthpoints;
-    protected int xp;
+    public int healthPoints;
+    public int currenthealthPoints;
+    public int xp;
 
+    public Map<String, Integer> abilities;
+    public List<String> inventory;
 
-    public HashMap<String, Integer> abilities;
-    public ArrayList<String> inventory;
-    public player(String playerName, String avatar_name, String avatarClass, int money, ArrayList<String> inventory) {
-        if (!avatarClass.equals("ARCHER") && !avatarClass.equals("ADVENTURER") && !avatarClass.equals("DWARF") ) {
-            return;
+    // Liste des classes valides pour un avatar
+    public static final List<String> VALID_CLASSES = List.of("ARCHER", "ADVENTURER", "DWARF");
+
+    public Player(String playerName, String avatarName, String avatarClass, int money, List<String> inventory) {
+        // Simplification de la validation de classe via une méthode statique
+        if (!isValidClass(avatarClass)) {
+            throw new IllegalArgumentException("Invalid avatar class: " + avatarClass);
         }
 
         this.playerName = playerName;
-        Avatar_name = avatar_name;
-        AvatarClass = avatarClass;
-        this.money = Integer.valueOf(money);
-        this.inventory = inventory;
-        this.abilities = UpdatePlayer.abilitiesPerTypeAndLevel().get(AvatarClass).get(1);
+        this.avatarName = avatarName;
+        this.avatarClass = avatarClass;
+        this.money = money;
+        this.inventory = new ArrayList<>(inventory); // Sécurisation de la liste d'inventaire
+        this.abilities = UpdatePlayer.abilitiesPerTypeAndLevel().get(avatarClass).get(1);
     }
 
-    public String getAvatarClass () {
-        return AvatarClass;
+    public static boolean isValidClass(String avatarClass) {
+        return VALID_CLASSES.contains(avatarClass);
     }
 
-    public void removeMoney(int amount) throws IllegalArgumentException {
-        if (money - amount < 0) {
-            throw new IllegalArgumentException("Player can't have a negative money!");
+    public String getAvatarClass() {
+        return avatarClass;
+    }
+
+    public void removeMoney(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Amount cannot be negative");
         }
-
-        money = Integer.parseInt(money.toString()) - amount;
+        if (money < amount) {
+            throw new IllegalArgumentException("Player can't have negative money!");
+        }
+        money -= amount;
     }
+
     public void addMoney(int amount) {
-        var value = Integer.valueOf(amount);
-        money = money + (value != null ? value : 0);
+        if (amount < 0) {
+            throw new IllegalArgumentException("Amount cannot be negative");
+        }
+        money += amount; // Utilisation directe des opérateurs rapides
     }
-    public int retrieveLevel() {
-        // (lvl-1) * 10 + round((lvl * xplvl-1)/4)
-        HashMap<Integer, Integer> levels = new HashMap<>();
-        levels.put(2,10); // 1*10 + ((2*0)/4)
-        levels.put(3,27); // 2*10 + ((3*10)/4)
-        levels.put(4,57); // 3*10 + ((4*27)/4)
-        levels.put(5,111); // 4*10 + ((5*57)/4)
-        //TODO : ajouter les prochains niveaux
 
-        if (xp < levels.get(2)) {
-            return 1;
+    public int retrieveLevel() {
+        // Simplification de la logique des niveaux via un tableau
+        int[] xpLevels = {0, 10, 27, 57, 111}; // Chaque index correspond au niveau (index 0 pour le niveau 1)
+        for (int i = xpLevels.length - 1; i >= 1; i--) {
+            if (xp >= xpLevels[i]) {
+                return i + 1;
+            }
         }
-        else if (xp < levels.get(3)) {return 2;
-        }
-        if (xp < levels.get(4)) {
-            return 3;
-        }
-        if (xp < levels.get(5)) return 4;
-        return 5;
+        return 1; // Si XP est inférieur au niveau 2
     }
 
     public int getXp() {
         return this.xp;
     }
 
-    /*
-    Ингредиенты:
-        Для теста:
+    public int getMoney() {
+        return this.money;
+    }
 
-            250 г муки
-            125 г сливочного масла (холодное)
-            70 г сахара
-            1 яйцо
-            1 щепотка соли
-     */
-
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
 }
