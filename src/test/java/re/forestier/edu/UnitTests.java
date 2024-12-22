@@ -2,8 +2,11 @@ package re.forestier.edu;
 
 import org.junit.jupiter.api.*;
 
-import re.forestier.edu.rpg.UpdatePlayer;
-import re.forestier.edu.rpg.player;
+import re.forestier.edu.rpg.Adventurer;
+import re.forestier.edu.rpg.Archer;
+import re.forestier.edu.rpg.Dwarf;
+import re.forestier.edu.rpg.Item;
+import re.forestier.edu.rpg.Player;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,20 +16,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class UnitTests {
 
     @Test
     @DisplayName("Sample test")
     void testPlayerName() {
-        player player = new player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
+        Adventurer player = new Adventurer("Florian", "Grognak le barbare", 100, new ArrayList<>());
         assertThat(player.playerName, is("Florian"));
     }
 
     @Test
     @DisplayName("Impossible to have negative money")
     void testNegativeMoney() {
-        player p = new player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
+        Adventurer p = new Adventurer("Florian", "Grognak le barbare", 100, new ArrayList<>());
 
         try {
             p.removeMoney(200);
@@ -39,7 +43,7 @@ public class UnitTests {
     @Test
     @DisplayName("Test addMoney")
     void testAddMoney() {
-        player p = new player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
+        Adventurer p = new Adventurer("Florian", "Grognak le barbare", 100, new ArrayList<>());
         p.addMoney(45);
         assertEquals(145, p.money);
     }
@@ -47,7 +51,7 @@ public class UnitTests {
     @Test
     @DisplayName("Test removeMoney")
     void testRemoveMoney() {
-        player p = new player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
+        Adventurer p = new Adventurer("Florian", "Grognak le barbare", 100, new ArrayList<>());
         
         p.removeMoney(45);
         
@@ -57,7 +61,7 @@ public class UnitTests {
     @Test
     @DisplayName("Test removeMoney with invalid value")
     void testRemoveMoneyInvalid() {
-        player p = new player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
+        Adventurer p = new Adventurer("Florian", "Grognak le barbare", 100, new ArrayList<>());
         
         assertThrows(IllegalArgumentException.class, () -> p.removeMoney(150));
     }
@@ -65,39 +69,39 @@ public class UnitTests {
     @Test
     @DisplayName("Test addXp and retrieveLevel")
     void testAddXpAndRetrieveLevel() {
-        player p = new player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
+        Adventurer p = new Adventurer("Florian", "Grognak le barbare", 100, new ArrayList<>());
         
-        UpdatePlayer.addXp(p, 5);
+        Player.addXp(p, 5);
         assertEquals(1, p.retrieveLevel());
         
-        UpdatePlayer.addXp(p, 20);
+        Player.addXp(p, 20);
         assertEquals(2, p.retrieveLevel());
 
-        UpdatePlayer.addXp(p, 10);
+        Player.addXp(p, 10);
         assertEquals(3, p.retrieveLevel());
 
-        UpdatePlayer.addXp(p, 45);
+        Player.addXp(p, 45);
         assertEquals(4, p.retrieveLevel());
         
-        UpdatePlayer.addXp(p, 120);
+        Player.addXp(p, 120);
         assertEquals(5, p.retrieveLevel());
     }
 
     @Test
     @DisplayName("Test addXp and retrieveLevel for the mutations")
     void testAddXpAndRetrieveLevelMutation() {
-        player p = new player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
+        Adventurer p = new Adventurer("Florian", "Grognak le barbare", 100, new ArrayList<>());
         
-        UpdatePlayer.addXp(p, 10);
+        Player.addXp(p, 10);
         assertEquals(2, p.retrieveLevel());
 
-        UpdatePlayer.addXp(p, 17);
+        Player.addXp(p, 17);
         assertEquals(3, p.retrieveLevel());
 
-        UpdatePlayer.addXp(p, 30);
+        Player.addXp(p, 30);
         assertEquals(4, p.retrieveLevel());
 
-        UpdatePlayer.addXp(p, 54);
+        Player.addXp(p, 54);
         assertEquals(5, p.retrieveLevel());
         
         
@@ -108,23 +112,23 @@ public class UnitTests {
     @Test
     @DisplayName("Test avatar class validation")
     void testAvatarClassValidation() {
-        // Classe d'avatar non valide
-        player invalidPlayer = new player("Florian", "Grognak le barbare", "INVALID_CLASS", 100, new ArrayList<>());
-        assertNull(invalidPlayer.getAvatarClass());
+        // Classe d'avatar non valide (a effacer après verification)
+        // playerOld invalidPlayer = new playerOld("Florian", "Grognak le barbare", "INVALID_CLASS", 100, new ArrayList<>());
+        // assertNull(invalidPlayer.getAvatarClass());
 
         // Classe d'avatar valide
-        player validPlayer = new player("Florian", "Grognak le barbare", "ARCHER", 100, new ArrayList<>());
+        Archer validPlayer = new Archer("Florian", "Grognak le barbare", 100, new ArrayList<>());
         assertEquals("ARCHER", validPlayer.getAvatarClass());
     }
 
     @Test
     @DisplayName("Test getXp")
     void testGetXp() {
-        player p = new player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
+        Adventurer p = new Adventurer("Florian", "Grognak le barbare", 100, new ArrayList<>());
         assertEquals(0, p.getXp());
         
         // Getion d'un test de mutation
-        UpdatePlayer.addXp(p, 45);
+        Player.addXp(p, 45);
         assertEquals(45, p.getXp());
     }
 
@@ -132,65 +136,66 @@ public class UnitTests {
     @Test
     @DisplayName("testPlayerKO") 
     void testPlayerKO(){
-        player player = new player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
+         Adventurer player = new Adventurer("Florian", "Grognak le barbare", 100, new ArrayList<>());
         player.healthpoints = 100;
         player.currenthealthpoints = 0;
-        UpdatePlayer.majFinDeTour(player);
+        Player.majFinDeTour(player);
         assertEquals(0, player.currenthealthpoints);
     }
 
     @Test
     @DisplayName("test health below half (adventurer)")
     void testHealthBelowHalfAdventurer(){
-        player player = new player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
+        Adventurer player = new Adventurer("Florian", "Grognak le barbare", 100, new ArrayList<>());
         player.healthpoints = 100;
         player.currenthealthpoints = 40;
-        UpdatePlayer.addXp(player, 20);
-        UpdatePlayer.majFinDeTour(player);
+        Player.addXp(player, 20);
+        Player.majFinDeTour(player);
         assertEquals(41, player.currenthealthpoints);
     }
     
     @Test
     // @DisplayName("test health below half adventurer with elixir")
     void testHealthBelowHalfdwarfWithElixir(){
-        player player = new player("Florian", "Grognak le barbare", "DWARF", 100, new ArrayList<>());
+        
+        Dwarf player = new Dwarf("Florian", "Grognak le barbare", 100, new ArrayList<>());
         player.healthpoints = 100;
         player.currenthealthpoints = 40;
-        player.inventory.add("Holy Elixir");
-        UpdatePlayer.majFinDeTour(player);
+        
+        Item holyElixir = new Item("Holy Elixir", "Recover your HP", 2, 100);
+        player.inventory.add(holyElixir);
+        Player.majFinDeTour(player);
         assertEquals(42, player.currenthealthpoints);
     }
-
+        
+       
     @Test
     // @DisplayName("test health below half archer with magic bow")
     void testHealthBelowHalfarcherWithmagic(){
-        player player = new player("Florian", "Grognak le barbare", "ARCHER", 100, new ArrayList<>());
+        Archer player = new Archer("Florian", "Grognak le barbare", 100, new ArrayList<>());
         player.healthpoints = 100;
         player.currenthealthpoints = 40;
-        player.inventory.add("Magic Bow");
-        UpdatePlayer.majFinDeTour(player);
+        Item item = new Item("Magic Bow", "Prevents surprise attacks", 2, 100);
+        player.inventory.add(item);
+        Player.majFinDeTour(player);
         assertEquals(45, player.currenthealthpoints);
     }
 
     @Test
     // @DisplayName("test health above half point")
     void testHealthAboveHalf(){
-        player player = new player("Florian", "Grognak le barbare", "DWARF", 100, new ArrayList<>());
+        Dwarf player = new Dwarf("Florian", "Grognak le barbare", 100, new ArrayList<>());
         player.healthpoints = 100;
         player.currenthealthpoints = 100;
-        UpdatePlayer.majFinDeTour(player);
+        Player.majFinDeTour(player);
         assertEquals(100, player.currenthealthpoints);
     }
 
     @Test
     @DisplayName("return false if want add 0 xp")
     void testAddZeroXp(){
-        player player = new player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
-        assertFalse(UpdatePlayer.addXp(player, 0));
+        Adventurer p = new Adventurer("Florian", "Grognak le barbare", 100, new ArrayList<>());
+        assertFalse(Player.addXp(p, 0));
     }
-
-    
-
-
 
 }
