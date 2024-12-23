@@ -6,12 +6,10 @@ import re.forestier.edu.rpg.Adventurer;
 import re.forestier.edu.rpg.Affichage;
 import re.forestier.edu.rpg.Archer;
 import re.forestier.edu.rpg.Item;
-import re.forestier.edu.rpg.Player;
 
 import java.util.ArrayList;
 
 import static org.approvaltests.Approvals.verify;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 public class GlobalTest {
 
     @Test

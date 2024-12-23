@@ -1,7 +1,5 @@
 package re.forestier.edu.rpg;
 
-import java.util.List;
-
 public class Affichage {
 
     public static String afficherJoueur(Player player) {
