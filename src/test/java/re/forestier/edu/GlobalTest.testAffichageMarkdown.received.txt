@@ -1,1 +1,12 @@
-world
+# Joueur : Florian
+## Avatar : SpiderMan
+**Classe d'avatar** : ARCHER
+**Niveau** : 1
+
+### Capacités :
+* **VIS** : 3
+* **ATK** : 3
+* **CHA** : 1
+* **INT** : 1
+
+* ### Inventaire** :

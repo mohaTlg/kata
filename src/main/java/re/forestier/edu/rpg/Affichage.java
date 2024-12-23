@@ -1,5 +1,7 @@
 package re.forestier.edu.rpg;
 
+import java.util.List;
+
 public class Affichage {
 
     public static String afficherJoueur(Player player) {
@@ -18,8 +20,22 @@ public class Affichage {
     }
 
     public static String afficherJoeurMarkdown(Player player) {
-        System.out.println("hello");
-        return "world";
+        StringBuilder markdown = new StringBuilder();
+
+        markdown.append("# Joueur : ").append(player.playerName).append("\n");
+        markdown.append("## Avatar : ").append(player.Avatar_name).append("\n");
+        markdown.append("**Classe d'avatar** : ").append(player.getAvatarClass()).append("\n");
+        markdown.append("**Niveau** : ").append(player.retrieveLevel()).append("\n\n");
+        markdown.append("### Capacités :\n");
+        player.abilities.forEach((name, level) -> {
+            markdown.append("* **").append(name).append("** : ").append(level).append("\n");
+        });
+        
+        markdown.append("\n### Inventaire** :\n");
+        player.inventory.forEach(item -> {
+            markdown.append(" *").append(item.getName()).append("\n");
+        });
+        return markdown.toString();
     }
 
 
