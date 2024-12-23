@@ -141,8 +141,25 @@ public abstract class Player {
                 adventurerHealth(player);
                 break;
 
-            default:
+            case "GOBLIN":
+                goblinHealth(player);
                 break;
+
+            default:
+                System.out.println("type de joeur inconue");
+                break;
+        }
+    }
+
+    private static void goblinHealth(Player player) {
+        player.currenthealthpoints += 3;
+
+        if (player.retrieveLevel() >= 4) {
+            player.currenthealthpoints += 1;
+        }
+
+        if (player.currenthealthpoints > player.healthpoints) {
+            player.currenthealthpoints = player.healthpoints;
         }
     }
 
@@ -185,6 +202,18 @@ public abstract class Player {
             return true;
         } else {
             System.out.println("Vous ne pouvez pas porter plus d'objet !");
+            return false;
+        }
+    }
+
+    public boolean sell(Item item) {
+        if (inventory.contains(item)) {
+            inventory.remove(item); 
+            addMoney(item.getValue());
+            System.out.println(item.getName() + " vendu pour " + item.getValue() + " pcs.");
+            return true;
+        } else {
+            System.out.println("Vous ne possedez pas cet objet dans l'inventaire.");
             return false;
         }
     }
