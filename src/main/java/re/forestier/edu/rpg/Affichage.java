@@ -16,4 +16,11 @@ public class Affichage {
 
         return finalString[0];
     }
+
+    public static String afficherJoeurMarkdown(Player player) {
+        System.out.println("hello");
+        return "world";
+    }
+
+
 }
