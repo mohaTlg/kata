@@ -2,7 +2,6 @@ package re.forestier.edu.rpg;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Archer extends Player {
 
@@ -15,18 +14,7 @@ public class Archer extends Player {
     public void setAbilities() {
         this.abilities = abilitiesPerTypeAndLevel().get(1);
     }
-
-    // A supprimer vu que c'est pas utilisé (a ne pas oublier)
-    // private final static Element[] objectList = {
-    //         new Element("Lookout Ring", "Prevents surprise attacks", 1, 50),
-    //         new Element("Scroll of Stupidity", "INT-2 when applied to an enemy", 1, 30),
-    //         new Element("Draupnir", "Increases XP gained by 100%", 3, 200),
-    //         new Element("Magic Charm", "Magic +10 for 5 rounds", 2, 100),
-    //         new Element("Rune Staff of Curse", "May burn your enemies... Or yourself. Who knows?", 5, 150),
-    //         new Element("Combat Edge", "Well, that's an edge", 2, 75),
-    //         new Element("Holy Elixir", "Recover your HP", 1, 25)
-    // };
-
+    
     @Override
     public String getAvatarClass() {
         return "ARCHER";
