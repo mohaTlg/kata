@@ -57,7 +57,6 @@ public abstract class Player {
         levels.put(3,27);
         levels.put(4,57);
         levels.put(5,111);
-        //TODO : ajouter les prochains niveaux
 
         if (xp < levels.get(2)) {
             return 1;
@@ -146,7 +145,6 @@ public abstract class Player {
                 break;
 
             default:
-                System.out.println("type de joeur inconue");
                 break;
         }
     }

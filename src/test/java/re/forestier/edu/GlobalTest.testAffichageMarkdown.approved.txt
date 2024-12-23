@@ -10,3 +10,4 @@
 * **INT** : 1
 
 ### Inventaire** :
+ *Magic Bow

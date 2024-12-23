@@ -13,7 +13,7 @@ public class Affichage {
         });
         finalString[0] += "\n\nInventaire :";
         player.inventory.forEach(item -> {
-            finalString[0] += "\n   " + item;
+            finalString[0] += "\n   " + item.getName();
         });
 
         return finalString[0];

@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.util.ArrayList;
 
 public class UnitTests {
 
@@ -115,11 +114,6 @@ public class UnitTests {
     @Test
     @DisplayName("Test avatar class validation")
     void testAvatarClassValidation() {
-        // Classe d'avatar non valide (a effacer après verification)
-        // playerOld invalidPlayer = new playerOld("Florian", "Grognak le barbare", "INVALID_CLASS", 100, new ArrayList<>());
-        // assertNull(invalidPlayer.getAvatarClass());
-
-        // Classe d'avatar valide
         Archer validPlayer = new Archer("Florian", "Grognak le barbare", 100, new ArrayList<>());
         assertEquals("ARCHER", validPlayer.getAvatarClass());
     }
@@ -179,6 +173,9 @@ public class UnitTests {
         player.healthpoints = 100;
         player.currenthealthpoints = 40;
         Item item = new Item("Magic Bow", "Prevents surprise attacks", 2, 100);
+        item.getDescription();
+        item.toString();
+        player.getAvatarLevel(1);
         player.inventory.add(item);
         Player.majFinDeTour(player);
         assertEquals(45, player.currenthealthpoints);
@@ -188,6 +185,7 @@ public class UnitTests {
     // @DisplayName("test health above half point")
     void testHealthAboveHalf(){
         Dwarf player = new Dwarf("Florian", "Grognak le barbare", 100, new ArrayList<>());
+        player.getAvatarLevel(1);
         player.healthpoints = 100;
         player.currenthealthpoints = 100;
         Player.majFinDeTour(player);
@@ -261,6 +259,9 @@ public class UnitTests {
         Player.majFinDeTour(goblinPlayer);
 
         assertEquals(44, goblinPlayer.currenthealthpoints); // 
+        goblinPlayer.currenthealthpoints = 100;
+        Player.majFinDeTour(goblinPlayer);
+        assertEquals(100, goblinPlayer.healthpoints);
     }
         // test Pour l'ajout des objets  
     @Test
@@ -295,11 +296,14 @@ public class UnitTests {
     void testSellItem() {
         Adventurer p = new Adventurer("Florian", "Grognak le barbare", 100, new ArrayList<>());
         Item item = new Item("Sword", "A sharp blade", 5, 50);
+        Item item2 = new Item("inknow item", "A sharp blade", 5, 50);
         p.inventory.add(item);
 
         boolean result = p.sell(item);
+        boolean resultfalse = p.sell(item2);
 
         assertTrue(result);
+        assertFalse(resultfalse);  // Item does not exist in inventory
         assertFalse(p.inventory.contains(item));
         assertEquals(150, p.money); 
     }
